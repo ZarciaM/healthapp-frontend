@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getMe } from '@/api/auth.api'
 import { useAuthStore } from '@/store/authStore'
 import Spinner from '@/components/ui/Spinner'
 
 export default function AuthCallbackPage() {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
   const setUser = useAuthStore((s) => s.setUser)
   const [message, setMessage] = useState('Connexion en cours...')
 
@@ -20,8 +19,7 @@ export default function AuthCallbackPage() {
 
         if (response.data?.user) {
           setUser(response.data.user)
-          const onboarding = searchParams.get('onboarding') === 'true'
-          navigate(onboarding ? '/onboarding' : '/dashboard', { replace: true })
+          navigate(response.data.user.isProfileComplete ? '/dashboard' : '/onboarding', { replace: true })
         } else {
           setMessage('Redirection...')
           navigate('/login', { replace: true })
@@ -38,7 +36,7 @@ export default function AuthCallbackPage() {
     return () => {
       cancelled = true
     }
-  }, [navigate, searchParams, setUser])
+  }, [navigate, setUser])
 
   return (
     <div className="flex min-h-screen items-center justify-center">

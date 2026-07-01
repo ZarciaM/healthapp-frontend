@@ -7,6 +7,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   register?: UseFormRegisterReturn
 }
 
+const errorId = (name?: string) => (name ? `${name}-error` : undefined)
+
 export default function Input({ label, error, register, className = '', ...props }: InputProps) {
   return (
     <div className="space-y-1">
@@ -17,10 +19,12 @@ export default function Input({ label, error, register, className = '', ...props
             ? 'border-red-300 focus:border-red-400 focus:ring-red-500'
             : 'border-gray-300 focus:border-blue-400'
         } ${className}`}
-        {...register}
+        aria-invalid={error ? 'true' : undefined}
+        aria-describedby={error ? errorId(register?.name) : undefined}
         {...props}
+        {...register}
       />
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p id={errorId(register?.name)} className="text-sm text-red-600">{error}</p>}
     </div>
   )
 }

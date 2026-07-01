@@ -19,10 +19,11 @@ const registerSchema = z.object({
     .regex(/[0-9]/, 'Doit contenir un chiffre'),
   firstName: z.string().min(1, 'Prénom requis'),
   lastName: z.string().min(1, 'Nom requis'),
-  gender: z.enum(['male', 'female'], { required_error: 'Genre requis' }),
+  gender: z.enum(['male', 'female'], { error: () => ({ message: 'Genre requis' }) }),
   dateOfBirth: z.string().refine(
     (val) => {
-      const birth = new Date(val)
+      const [y, m, d] = val.split('-').map(Number)
+      const birth = new Date(y, m - 1, d)
       const now = new Date()
       const age = now.getFullYear() - birth.getFullYear()
       const monthDiff = now.getMonth() - birth.getMonth()
@@ -54,8 +55,8 @@ export default function RegisterPage() {
       const response = await registerApi(data)
       if (response.data?.user) {
         setUser(response.data.user)
+        navigate('/onboarding')
       }
-      navigate('/onboarding')
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 409) {
         setApiError('Cet email est déjà utilisé.')

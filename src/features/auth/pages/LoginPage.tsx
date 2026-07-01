@@ -48,7 +48,12 @@ export default function LoginPage() {
   }
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
+    const baseUrl = import.meta.env.VITE_API_URL
+    if (!baseUrl) {
+      setApiError('Configuration API manquante. Contactez le support.')
+      return
+    }
+    window.location.href = `${baseUrl}/auth/google`
   }
 
   return (

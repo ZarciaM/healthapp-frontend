@@ -24,11 +24,11 @@ export function login(data: LoginData): Promise<IApiSuccess<IAuthResponse>> {
 }
 
 export function logout(): Promise<void> {
-  return apiClient.post('/auth/logout')
+  return apiClient.post('/auth/logout').then(() => undefined)
 }
 
 export function refreshToken(): Promise<void> {
-  return apiClient.post('/auth/refresh')
+  return apiClient.post('/auth/refresh').then(() => undefined)
 }
 
 export function getMe(): Promise<IApiSuccess<{ user: IUser }>> {

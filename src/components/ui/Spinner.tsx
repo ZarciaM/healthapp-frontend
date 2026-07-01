@@ -1,7 +1,11 @@
-export default function Spinner() {
+interface SpinnerProps {
+  className?: string
+}
+
+export default function Spinner({ className = 'h-8 w-8' }: SpinnerProps) {
   return (
     <svg
-      className="h-8 w-8 animate-spin text-blue-600"
+      className={`animate-spin text-blue-600 ${className}`}
       viewBox="0 0 24 24"
       fill="none"
     >

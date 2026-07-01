@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { Activity, Apple, Droplets, Heart, Moon, Weight, Zap } from 'lucide-react'
+import { useAuthStore } from '@/store/authStore'
 import Button from '@/components/ui/Button'
 
 const features = [
@@ -12,6 +13,12 @@ const features = [
 ]
 
 export default function LandingPage() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b border-gray-100">
