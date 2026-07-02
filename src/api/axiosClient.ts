@@ -1,5 +1,4 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
-import { useAuthStore } from '@/store/authStore'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -28,7 +27,7 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _isRetry?: boolean }
 
-    if (error.response?.status !== 401 || originalRequest._isRetry) {
+    if (error.response?.status !== 401 || originalRequest._isRetry || originalRequest.url?.includes('/auth/refresh')) {
       return Promise.reject(error)
     }
 
@@ -47,8 +46,6 @@ apiClient.interceptors.response.use(
       return apiClient(originalRequest)
     } catch (refreshError) {
       processQueue(refreshError)
-      useAuthStore.getState().reset()
-      window.location.href = '/login'
       return Promise.reject(refreshError)
     } finally {
       isRefreshing = false
