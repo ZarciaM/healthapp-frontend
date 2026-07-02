@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import AuthLayout from '@/components/layout/AuthLayout'
 import LandingPage from '@/features/landing/pages/LandingPage'
 import LoginPage from '@/features/auth/pages/LoginPage'
 import RegisterPage from '@/features/auth/pages/RegisterPage'
@@ -25,9 +26,12 @@ export default function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
       <Route path="/auth/callback" element={<AuthCallbackPage />} />
+
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Route>
 
       <Route element={<PrivateRoute />}>
         <Route path="/onboarding" element={<OnboardingPage />} />

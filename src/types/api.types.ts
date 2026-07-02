@@ -3,19 +3,27 @@ export interface IUser {
   email: string
   firstName: string
   lastName: string
-  gender: 'male' | 'female' | 'other'
+  gender: 'male' | 'female'
   dateOfBirth: string
-  role: 'user' | 'admin'
-  isOnboarded: boolean
+  authProvider: 'local' | 'google'
+  isEmailVerified: boolean
+  isProfileComplete: boolean
+  timezone: string
   createdAt: string
-  updatedAt: string
 }
 
 export interface IAuthResponse {
   user: IUser
-  accessToken?: string
 }
 
-export interface IRefreshResponse {
-  accessToken: string
+export interface IApiError {
+  success: false
+  message: string
+  details?: string
+}
+
+export interface IApiSuccess<T = undefined> {
+  success: true
+  message: string
+  data?: T
 }
