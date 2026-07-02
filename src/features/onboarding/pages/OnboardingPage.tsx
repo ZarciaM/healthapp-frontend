@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBeforeUnload, useBlocker, useNavigate } from 'react-router-dom'
-import { useAuthStore } from '@/store/authStore'
 import { useOnboarding } from '../hooks/useOnboarding'
 import ProgressBar from '@/components/ui/ProgressBar'
 import Spinner from '@/components/ui/Spinner'
@@ -15,7 +14,6 @@ const BLOCKER_MESSAGE = 'Votre progression sera perdue, voulez-vous vraiment qui
 
 export default function OnboardingPage() {
   const navigate = useNavigate()
-  const user = useAuthStore((s) => s.user)
   const { status, submitStep, isLoading, isSubmitting } = useOnboarding()
   const isConfirmedRef = useRef(false)
 

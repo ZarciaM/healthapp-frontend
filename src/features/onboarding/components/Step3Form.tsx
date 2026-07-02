@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -27,7 +26,6 @@ export default function Step3Form({ defaultValues, onSubmit, isSubmitting }: Ste
     register,
     handleSubmit,
     control,
-    formState: { errors },
   } = useForm<Step3FormData>({
     resolver: zodResolver(step3Schema),
     defaultValues: {
