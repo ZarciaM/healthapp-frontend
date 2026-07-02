@@ -36,7 +36,7 @@ export default function LoginPage() {
       const response = await login(data)
       if (response.data?.user) {
         setUser(response.data.user)
-        navigate(response.data.user.isProfileComplete ? '/dashboard' : '/onboarding')
+        navigate('/onboarding')
       }
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 401) {

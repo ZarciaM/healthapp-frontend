@@ -7,7 +7,7 @@ export interface IUser {
   dateOfBirth: string
   authProvider: 'local' | 'google'
   isEmailVerified: boolean
-  isProfileComplete: boolean
+  hasBasicProfileInfo: boolean
   timezone: string
   createdAt: string
 }

@@ -19,7 +19,7 @@ export default function AuthCallbackPage() {
 
         if (response.data?.user) {
           setUser(response.data.user)
-          navigate(response.data.user.isProfileComplete ? '/dashboard' : '/onboarding', { replace: true })
+          navigate('/onboarding', { replace: true })
         } else {
           setMessage('Redirection...')
           navigate('/login', { replace: true })
