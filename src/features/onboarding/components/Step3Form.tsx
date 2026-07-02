@@ -8,8 +8,8 @@ const step3Schema = z.object({
   medicalHistory: z.object({
     hypertension: z.boolean(),
     diabetes: z.boolean(),
-    allergies: z.array(z.string().min(1, 'Veuillez remplir ou supprimer ce champ')).default([]),
-    currentMedications: z.array(z.string().min(1, 'Veuillez remplir ou supprimer ce champ')).default([]),
+    allergies: z.array(z.string().min(1, 'Veuillez remplir ou supprimer ce champ')),
+    currentMedications: z.array(z.string().min(1, 'Veuillez remplir ou supprimer ce champ')),
   }),
 })
 
@@ -34,17 +34,15 @@ export default function Step3Form({ defaultValues, onSubmit, isSubmitting }: Ste
     },
   })
 
-  const {
-    fields: allergyFields,
-    append: addAllergy,
-    remove: removeAllergy,
-  } = useFieldArray({ control, name: 'medicalHistory.allergies' })
+  const allergyHelpers = useFieldArray({ control: control as any, name: 'medicalHistory.allergies' })
+  const allergyFields = allergyHelpers.fields
+  const addAllergy: (value: string) => void = (value) => allergyHelpers.append(value)
+  const removeAllergy: (index: number) => void = (index) => allergyHelpers.remove(index)
 
-  const {
-    fields: medFields,
-    append: addMed,
-    remove: removeMed,
-  } = useFieldArray({ control, name: 'medicalHistory.currentMedications' })
+  const medHelpers = useFieldArray({ control: control as any, name: 'medicalHistory.currentMedications' })
+  const medFields = medHelpers.fields
+  const addMed: (value: string) => void = (value) => medHelpers.append(value)
+  const removeMed: (index: number) => void = (index) => medHelpers.remove(index)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

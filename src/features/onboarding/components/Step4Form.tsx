@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button'
 
 const step4Schema = z.object({
   lifestyle: z.object({
-    averageSleepHours: z.coerce.number().min(0, 'Minimum 0 heures').max(24, 'Maximum 24 heures'),
+    averageSleepHours: z.number().min(0, 'Minimum 0 heures').max(24, 'Maximum 24 heures'),
     smoker: z.boolean(),
     alcoholConsumption: z.enum(['none', 'occasional', 'regular'], {
       error: () => ({ message: 'Sélectionnez votre consommation' }),

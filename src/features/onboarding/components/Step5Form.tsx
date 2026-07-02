@@ -10,7 +10,7 @@ const step5Schema = z.object({
       error: () => ({ message: 'Sélectionnez la régularité' }),
     }),
     lastPeriodDate: z.string().min(1, 'Date requise'),
-    averageCycleLength: z.coerce.number().min(15, 'Minimum 15 jours').max(45, 'Maximum 45 jours'),
+    averageCycleLength: z.number().min(15, 'Minimum 15 jours').max(45, 'Maximum 45 jours'),
   }),
 })
 
@@ -63,7 +63,7 @@ export default function Step5Form({ defaultValues, onSubmit, isSubmitting }: Ste
         type="number"
         placeholder="28"
         error={errors.womenSpecific?.averageCycleLength?.message}
-        register={register('womenSpecific.averageCycleLength')}
+        register={register('womenSpecific.averageCycleLength', { valueAsNumber: true })}
       />
 
       <Button type="submit" isLoading={isSubmitting} className="w-full">

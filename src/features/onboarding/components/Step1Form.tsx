@@ -5,8 +5,8 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
 const step1Schema = z.object({
-  height: z.coerce.number().min(50, 'Minimum 50 cm').max(250, 'Maximum 250 cm'),
-  currentWeight: z.coerce.number().min(20, 'Minimum 20 kg').max(300, 'Maximum 300 kg'),
+  height: z.number().min(50, 'Minimum 50 cm').max(250, 'Maximum 250 cm'),
+  currentWeight: z.number().min(20, 'Minimum 20 kg').max(300, 'Maximum 300 kg'),
 })
 
 type Step1FormData = z.infer<typeof step1Schema>
@@ -34,14 +34,14 @@ export default function Step1Form({ defaultValues, onSubmit, isSubmitting }: Ste
         type="number"
         placeholder="170"
         error={errors.height?.message}
-        register={register('height')}
+        register={register('height', { valueAsNumber: true })}
       />
       <Input
         label="Poids actuel (kg)"
         type="number"
         placeholder="70"
         error={errors.currentWeight?.message}
-        register={register('currentWeight')}
+        register={register('currentWeight', { valueAsNumber: true })}
       />
       <Button type="submit" isLoading={isSubmitting} className="w-full">
         Suivant
