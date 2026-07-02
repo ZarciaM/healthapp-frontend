@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useBeforeUnload, useBlocker, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { useOnboarding } from '../hooks/useOnboarding'
 import ProgressBar from '@/components/ui/ProgressBar'
@@ -11,10 +11,13 @@ import Step3Form from '../components/Step3Form'
 import Step4Form from '../components/Step4Form'
 import Step5Form from '../components/Step5Form'
 
+const BLOCKER_MESSAGE = 'Votre progression sera perdue, voulez-vous vraiment quitter ?'
+
 export default function OnboardingPage() {
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
   const { status, submitStep, isLoading, isSubmitting } = useOnboarding()
+  const isConfirmedRef = useRef(false)
 
   const currentStep = status?.currentStep ?? 0
   const totalSteps = status?.totalSteps ?? 4
@@ -32,6 +35,30 @@ export default function OnboardingPage() {
       navigate('/dashboard', { replace: true })
     }
   }, [isCompleted, navigate])
+
+  const blocker = useBlocker(
+    () => !isCompleted && !isConfirmedRef.current,
+  )
+
+  useEffect(() => {
+    if (blocker.state === 'blocked') {
+      const confirmed = window.confirm(BLOCKER_MESSAGE)
+      if (confirmed) {
+        isConfirmedRef.current = true
+        blocker.proceed()
+      } else {
+        blocker.reset()
+      }
+    }
+  }, [blocker])
+
+  useBeforeUnload(
+    useCallback((e: BeforeUnloadEvent) => {
+      if (!isCompleted && !isConfirmedRef.current) {
+        e.preventDefault()
+      }
+    }, [isCompleted]),
+  )
 
   const handleStepSubmit = useCallback(
     async (data: object) => {
